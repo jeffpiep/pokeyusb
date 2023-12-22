@@ -1,0 +1,60 @@
+;
+; FujiNet Project
+;
+; Atari 8-bit POKEY Keyboard Interface
+; Reads the keyboard scan code (pushed to RX FIFO) and outputs a kbd bit (pulled from TX_FIFO) 
+; Uses 2 DMA channels to read the desired kbd bit
+;
+; the Y register is set prior to enabling the SM using 
+    ; pio_sm_put(PIO, SM_KBD, (uintptr_t)kbd_lut >> KLINES); // put LUT address into the FIFO
+    ; pull
+    ; mov y, osr
+    ; out null, 1
+    ;
+    ; or using c code:
+    ; pio_sm_put(PIO, SM_KBD, (uintptr_t)kbd_lut >> KLINES);
+    ; pio_sm_exec_wait_blocking(PIO, SM_KBD, pio_encode_pull(false, true));
+    ; pio_sm_exec_wait_blocking(PIO, SM_KBD, pio_encode_mov(pio_y, pio_osr));
+    ; pio_sm_exec_wait_blocking(PIO, SM_KBD, pio_encode_out(pio_null, 1)); 
+
+.define PUBLIC KLINES 6
+.define PUBLIC KRLINES 2
+
+.program kbd
+    set pins 0
+    set pindirs 0
+    pull
+    mov y, osr
+    out null, KRLINES ; trigger autopull
+.wrap_target
+    mov isr, y      ; put the base address in ISR
+    in pins, KLINES      ; copy the pin combination into the ISR (auto push)
+    out pindirs, KRLINES     ; output the kbd bit value 
+.wrap
+
+% c-sdk {
+// this is a raw helper function for use by the user which sets up the GPIO input and output, and configures the SM to output on a particular pin
+
+void kbd_program_init(PIO pio, uint sm, uint offset, uint in_pin, uint out_pin) 
+{
+   // configure a SM
+   pio_sm_config c = kbd_program_get_default_config(offset);
+
+   // start at in_pin to read in the phases and push to the FIFO
+   sm_config_set_in_pins(&c, in_pin); 
+   sm_config_set_in_shift(&c, false, true, KLINES);
+
+   // get 1 bit kbd values through the OSR and output on out_pin
+   sm_config_set_set_pins(&c, out_pin, KRLINES);
+   sm_config_set_out_pins(&c, out_pin, KRLINES);
+   sm_config_set_out_shift(&c, true, true, KRLINES);
+   
+   // set out_pin as a GPIO output connected to this SM
+   pio_gpio_init(pio, out_pin);
+   pio_gpio_init(pio, out_pin+1);
+   pio_sm_set_consecutive_pindirs(pio, sm, out_pin, KRLINES, false);
+
+   // initialize
+   pio_sm_init(pio, sm, offset, &c);
+}
+%}
