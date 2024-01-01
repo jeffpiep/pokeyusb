@@ -29,6 +29,7 @@ add_executable(pokeyusb)
 target_sources(pokeyusb PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/hid_app.c
         ${CMAKE_CURRENT_LIST_DIR}/pokeyusb.c
+        ${CMAKE_CURRENT_LIST_DIR}/a8keymap.c
 )
 
 pico_set_program_name(pokeyusb "pokeyusb")

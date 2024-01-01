@@ -11,20 +11,22 @@
 #include "kbd.pio.h"
 
 //TinyUSB
-// #include "bsp/board.h"
 #include "tusb.h"
+
+// local files
+#include "a8keymap.h"
 
 extern void hid_app_task(void);
 
 void setup()
 {
-
+  // DMA
+  
 }
 
 int main()
 {
     stdio_init_all();
-    // board_init(); // this is part of tinyusb examples todo: figure out what we need and move over
     printf("\nPICO-POKEY USB\n");
 
     setup();
@@ -37,7 +39,6 @@ int main()
         // tinyusb: host task
         tuh_task();
     }
-
 
     return 0;
 }

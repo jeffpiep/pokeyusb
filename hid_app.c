@@ -144,7 +144,6 @@ static void process_kbd_report(hid_keyboard_report_t const *report)
 {
   static hid_keyboard_report_t prev_report = { 0, 0, {0} }; // previous report to check key released
 
-  // to do : also look for ctrl, shift, alt, logo keys
   uint8_t m = report->modifier;
   if (m)
   {
@@ -169,34 +168,27 @@ static void process_kbd_report(hid_keyboard_report_t const *report)
       }else
       {
         // not existed in previous report means the current key is pressed
-        bool const is_shift = report->modifier & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
-        uint8_t ch = keycode2ascii[report->keycode[i]][is_shift ? 1 : 0];
-        printf("%02x down\n",ch);
-        fflush(stdout); // flush right away, else nanolib will wait for newline
+        // bool const is_shift = report->modifier & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
+        // uint8_t ch = keycode2ascii[report->keycode[i]][is_shift ? 1 : 0];
+        printf("%02x down\n",report->keycode[i]);
       }
     }
 
-    // TODO example skips key released
-
     if (prev_report.keycode[i])
     {
-       // to do : also look for ctrl, shift, alt, logo keys
        if ( find_key_in_report(report, prev_report.keycode[i]))
        {
         // exist is current report so holding
        }
        else
        {
-                // not existed in previous report means the current key is pressed
-        bool const is_shift = prev_report.modifier & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
-        uint8_t ch = keycode2ascii[prev_report.keycode[i]][is_shift ? 1 : 0];
-        printf("%02x up\n",ch);
-        
-        fflush(stdout); // flush right away, else nanolib will wait for newline
-       }
+        // not existed in current report means the current key is lifted
+        // bool const is_shift = prev_report.modifier & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
+        // uint8_t ch = keycode2ascii[prev_report.keycode[i]][is_shift ? 1 : 0];
+        printf("%02x up\n",prev_report.keycode[i]);
+      }
     }
   }
-
 
   prev_report = *report;
 }
