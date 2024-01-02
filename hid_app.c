@@ -26,6 +26,10 @@
 #include "bsp/board.h"
 #include "tusb.h"
 
+// local files
+#include "a8keymap.h"
+extern uint8_t keyboard_lut[64];
+
 //--------------------------------------------------------------------+
 // MACRO TYPEDEF CONSTANT ENUM DECLARATION
 //--------------------------------------------------------------------+
@@ -36,7 +40,7 @@
 
 #define MAX_REPORT  4
 
-static uint8_t const keycode2ascii[128][2] =  { HID_KEYCODE_TO_ASCII };
+// static uint8_t const keycode2ascii[128][2] =  { HID_KEYCODE_TO_ASCII };
 
 // Each HID instance can has multiple reports
 static struct
@@ -170,6 +174,10 @@ static void process_kbd_report(hid_keyboard_report_t const *report)
         // not existed in previous report means the current key is pressed
         // bool const is_shift = report->modifier & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
         // uint8_t ch = keycode2ascii[report->keycode[i]][is_shift ? 1 : 0];
+        if (a8keymap[report->keycode[i]] != A8_KEY_INVALID)
+        {
+          keyboard_lut[(~a8keymap[report->keycode[i]]) & 0x3f] = 1;
+        }
         printf("%02x down\n",report->keycode[i]);
       }
     }
@@ -185,6 +193,10 @@ static void process_kbd_report(hid_keyboard_report_t const *report)
         // not existed in current report means the current key is lifted
         // bool const is_shift = prev_report.modifier & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
         // uint8_t ch = keycode2ascii[prev_report.keycode[i]][is_shift ? 1 : 0];
+        if (a8keymap[prev_report.keycode[i]] != A8_KEY_INVALID)
+        {
+          keyboard_lut[(~a8keymap[prev_report.keycode[i]]) & 0x3f] = 0;
+        }
         printf("%02x up\n",prev_report.keycode[i]);
       }
     }

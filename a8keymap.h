@@ -1,6 +1,19 @@
 #ifndef _A8KEYMAP_H
 #define _A8KEYMAP_H
 
+// https://www.atariarchives.org/c3ba/kcindex.php
+
+// http://krap.pl/mirrorz/atari/homepage.ntlworld.com/kryten_droid/Atari/800XL/atari_hw/pokey.htm#Key%20scan%20circuit
+//  	    !K0	!K1	!K2	!K3	!K4	!K5
+// CNTL	    1	1	1	1	1	1           0x3f
+// SHIFT	1	1	1	1	0	1           0x2f
+// BRK	    1	1	1	1	0	0           0x0f
+
+
+#include <stdint.h>
+
+extern uint8_t a8keymap[128];
+
 #define A8_KEY_L               0
 #define A8_KEY_J               1
 #define A8_KEY_SEMICOLON               2
@@ -55,140 +68,10 @@
 #define A8_KEY_S               62
 #define A8_KEY_A               63
 
-#define A8_KEY_BREAK           64
-#define A8_KEY_SHIFT           65
-#define A8_KEY_CONTROL         66 // TODO FIGURE OUT THESE
+#define A8_KEY_BREAK           15
+#define A8_KEY_SHIFT           17
+#define A8_KEY_CONTROL         18 
 
 #define A8_KEY_INVALID         0xff
-
-
-uint8_t a8keymap[128] = {A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_A,
-                         A8_KEY_B,
-                         A8_KEY_C,
-                         A8_KEY_D,
-                         A8_KEY_E,
-                         A8_KEY_F,
-                         A8_KEY_G,
-                         A8_KEY_H,
-                         A8_KEY_I,
-                         A8_KEY_J,
-                         A8_KEY_K,
-                         A8_KEY_L,
-                         A8_KEY_M,
-                         A8_KEY_N,
-                         A8_KEY_O,
-                         A8_KEY_P,
-                         A8_KEY_Q,
-                         A8_KEY_R,
-                         A8_KEY_S,
-                         A8_KEY_T,
-                         A8_KEY_U,
-                         A8_KEY_V,
-                         A8_KEY_W,
-                         A8_KEY_X,
-                         A8_KEY_Y,
-                         A8_KEY_Z,
-                         A8_KEY_1,
-                         A8_KEY_2,
-                         A8_KEY_3,
-                         A8_KEY_4,
-                         A8_KEY_5,
-                         A8_KEY_6,
-                         A8_KEY_7,
-                         A8_KEY_8,
-                         A8_KEY_9,
-                         A8_KEY_0,
-                         A8_KEY_RETURN,
-                         A8_KEY_ESCAPE,
-                         A8_KEY_DELETE,
-                         A8_KEY_TAB,
-                         A8_KEY_SPACE,
-                         A8_KEY_MINUS,
-                         A8_KEY_EQUAL,
-                         A8_KEY_COMMA,
-                         A8_KEY_PERIOD,
-                         A8_KEY_PLUS,
-                         A8_KEY_INVALID,
-                         A8_KEY_SEMICOLON,
-                         A8_KEY_7,
-                         A8_KEY_INVALID,
-                         A8_KEY_COMMA,
-                         A8_KEY_PERIOD,
-                         A8_KEY_SLASH,
-                         A8_KEY_CAPS_LOWER,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_BREAK,
-                         A8_KEY_GREATER_THAN,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_DELETE,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_ASTERISK,
-                         A8_KEY_PLUS,
-                         A8_KEY_EQUAL,
-                         A8_KEY_MINUS,
-                         A8_KEY_INVALID,
-                         A8_KEY_SLASH,
-                         A8_KEY_ASTERISK,
-                         A8_KEY_MINUS,
-                         A8_KEY_PLUS,
-                         A8_KEY_RETURN,
-                         A8_KEY_1,
-                         A8_KEY_2,
-                         A8_KEY_3,
-                         A8_KEY_4,
-                         A8_KEY_5,
-                         A8_KEY_6,
-                         A8_KEY_7,
-                         A8_KEY_8,
-                         A8_KEY_9,
-                         A8_KEY_0,
-                         A8_KEY_PERIOD,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_EQUAL,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID,
-                         A8_KEY_INVALID}
 
 #endif
