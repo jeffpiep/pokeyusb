@@ -38,7 +38,7 @@ extern uint8_t a8keymap[128];
 #define A8_KEY_ESCAPE               28
 #define A8_KEY_5               29
 #define A8_KEY_2               30
-#define A8_KEY_PERIOD               31
+#define A8_KEY_PERIOD               34
 #define A8_KEY_1               31
 #define A8_KEY_COMMA               32
 #define A8_KEY_SPACE               33

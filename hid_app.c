@@ -178,7 +178,7 @@ static void process_kbd_report(hid_keyboard_report_t const *report)
         {
           keyboard_lut[(~a8keymap[report->keycode[i]]) & 0x3f] = 1;
         }
-        printf("%02x down\n",report->keycode[i]);
+        printf("%02x->%02d down\n",report->keycode[i], (~a8keymap[report->keycode[i]]) & 0x3f);
       }
     }
 

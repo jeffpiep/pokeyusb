@@ -20,7 +20,7 @@ PIO pioblk_keyboard = pio0;
 
 extern void hid_app_task(void);
 
-__aligned(64) uint8_t keyboard_lut[64] = { [0 ... 63] = 0 };
+__aligned(256) uint8_t keyboard_lut[64] = { [0 ... 63] = 0 };
 
 int chan_kb_addr, chan_kb_data;
 dma_channel_config cfg_kb_addr, cfg_kb_data;
@@ -50,6 +50,7 @@ void setup()
     pio_sm_exec_wait_blocking(pioblk_keyboard, SM_KB, pio_encode_pull(false, true));
     pio_sm_exec_wait_blocking(pioblk_keyboard, SM_KB, pio_encode_mov(pio_y, pio_osr));
     pio_sm_exec_wait_blocking(pioblk_keyboard, SM_KB, pio_encode_out(pio_null, 1)); 
+    pio_sm_exec_wait_blocking(pioblk_keyboard, SM_KB, pio_encode_set(pio_pins, 0));
     pio_sm_set_enabled(pioblk_keyboard, SM_KB, true);
 
     chan_kb_addr = dma_claim_unused_channel(true);
