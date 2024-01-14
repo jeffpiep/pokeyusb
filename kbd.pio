@@ -49,10 +49,10 @@ void kbd_program_init(PIO pio, uint sm, uint offset, uint in_pin, uint out_pin)
 
     // set out_pin as a GPIO output connected to this SM
     pio_gpio_init(pio, out_pin);
-    // gpio_set_pulls(out_pin, true, false);
+    gpio_set_pulls(out_pin, false, false);
     pio_gpio_init(pio, out_pin + 1);
-    // gpio_set_pulls(out_pin + 1, true, false);
-    // pio_sm_set_consecutive_pindirs(pio, sm, out_pin, KRLINES, true);
+    gpio_set_pulls(out_pin + 1, false, false);
+    pio_sm_set_consecutive_pindirs(pio, sm, out_pin, KRLINES, false);
 
     // initialize
     pio_sm_init(pio, sm, offset, &c);
