@@ -23,7 +23,7 @@
 .program kbd
     mov isr, y      ; put the base address in ISR
     in pins, KLINES      ; copy the pin combination into the ISR (auto push)
-    out pins, KRLINES     ; output the kbd bit value 
+    out pindirs, KRLINES     ; output the kbd bit value 
 
 % c-sdk {
 // this is a raw helper function for use by the user which sets up the GPIO input and output, and configures the SM to output on a particular pin
@@ -32,13 +32,14 @@ void kbd_program_init(PIO pio, uint sm, uint offset, uint in_pin, uint out_pin)
 {
     // configure a SM
     pio_sm_config c = kbd_program_get_default_config(offset);
+    // sm_config_set_clkdiv(&c, 200);
 
     // start at in_pin to read in the phases and push to the FIFO
     sm_config_set_in_pins(&c, in_pin);
     sm_config_set_in_shift(&c, false, true, KLINES);
     for (int i = 0 ; i < KLINES ; i++)
     {
-        gpio_set_pulls(in_pin + i, true, false);
+        gpio_set_pulls(in_pin + i, false, false);
     }
 
     // get 1 bit kbd values through the OSR and output on out_pin
@@ -51,7 +52,7 @@ void kbd_program_init(PIO pio, uint sm, uint offset, uint in_pin, uint out_pin)
     // gpio_set_pulls(out_pin, true, false);
     pio_gpio_init(pio, out_pin + 1);
     // gpio_set_pulls(out_pin + 1, true, false);
-    pio_sm_set_consecutive_pindirs(pio, sm, out_pin, KRLINES, true);
+    // pio_sm_set_consecutive_pindirs(pio, sm, out_pin, KRLINES, true);
 
     // initialize
     pio_sm_init(pio, sm, offset, &c);
